@@ -5,7 +5,22 @@ from .models import Books
 def index(req):
     allbooks = Books.objects.all()
     print(allbooks)
-    return render(req,"index.html")
+
+    #  Adding Table data 
+    # b = Books.objects.create(bookid=107,title='mongo',author='mm',category='database',price=3000,qty=114,dop='2023-08-25',photo=None)
+    # b.save()
+
+    # Updating Table Data
+    # b = Books.objects.get(bookid=107)
+    # b.author = 'Mayur k'
+    # b.save()
+
+    # Update using filter command
+    # b = Books.objects.filter(bookid = 117).first()
+    # b.author = 'manoj kumar'
+    # b.save()
+    context = {'allbooks':allbooks}
+    return render(req,"index.html",context)
 
 def signin(req):
     return render(req,"signin.html")

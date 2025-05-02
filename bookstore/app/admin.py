@@ -5,7 +5,7 @@ from .models import Books
 
 class BookAdmin(admin.ModelAdmin):
     list_display=[
-        "userid","bookid","title","author","category","price","qty","dop",
+        "userid","bookid","title","author","category","price","qty","dop","photo",
     ]
 
 admin.site.register(Books,BookAdmin)

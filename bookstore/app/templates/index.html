@@ -32,8 +32,51 @@
 
     <!-- books -->
     <div class="container-fluid mt-3">
-      <div class="row text-center">
-        <h1>Books Data</h1>
+      <div class="row">
+        {% comment %}
+        <table class="table table-bordered">
+          <thead>
+            <th>Sr.No</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>QTY</th>
+            <th>DOP</th>
+            <th>Photo</th>
+          </thead>
+          <tbody>
+            {% for x in allbooks %}
+              <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{x.title}}</td>
+                <td>{{x.author}}</td>
+                <td>{{x.category}}</td>
+                <td>{{x.price}}</td>
+                <td>{{x.qty}}</td>
+                <td>{{x.dop}}</td>
+                <td><img src="{{x.photo.url}}" alt="{{x.title}}" width="200" height="200"></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        {% endcomment %}
+
+        {% for x in allbooks %}
+        <div class="col-md-3 mb-3 text-center">
+          <div class="card" style="width: 18rem;">
+            <h5 class="card-title">{{x.title}}</h5>
+             <div style="height: 300px">
+            <img src="{{x.photo.url}}" class="card-img-top" alt="{{x.title}}" >
+          </div>
+            <div class="card-body">
+              <p class="card-text">Author : {{x.author}}</p>
+              <p class="card-text">Price : {{x.price}}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+
       </div>
     </div>
 
