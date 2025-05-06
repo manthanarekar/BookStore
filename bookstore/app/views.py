@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from .models import Books
 
 # Create your views here.
@@ -22,8 +22,34 @@ def index(req):
     context = {'allbooks':allbooks}
     return render(req,"index.html",context)
 
+
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.hashers import check_password 
 def signin(req):
-    return render(req,"signin.html")
+    if req.method == 'POST':
+        uemail = req.POST.get('uemail')
+        upass = req.POST.get('upass')
+        # uname = req.POST.get('uname')
+        print(uemail,upass)
+        # userdata = User.objects.filter(email=uemail,password=upass)
+        # userdata = authenticate(email=uemail,password=upass)
+        # print('USerdata :',userdata)
+        # chk = User.objects.filter(username=uname,email=uemail)
+        try:
+            checkemail = User.objects.get(email=uemail)
+            # print('chk :',chk)
+            if checkemail.check_password(upass):
+                login(req,checkemail)
+                return render(req,'dashborad.html')
+            else:
+                messages.error(req,"Invalid email or password")
+                return render(req,"signin.html")  
+        except User.DoesNotExist:
+            messages.error(req,"email id not exists")
+            return render(req,'signin.html')
+    else:
+        
+        return render(req,"signin.html")
 
 
 from django.contrib import messages
@@ -63,12 +89,13 @@ def signup(req):
             messages.error(req,"email alrady exsits")
             return render(req,"signup.html")     
         
-        newuser = User.objects.create(username=uname,email=uemail,password=upass)
-        newuser.set_password()
-        newuser.save()
+        else:
+            newuser = User.objects.create(username=uname,email=uemail,password=upass)
+            newuser.set_password(upass)
+            newuser.save()
 
-        messages.error(req,"Registration done successfully!")
-        return render(req,"signin.html")
+            messages.error(req,"Registration done successfully!")
+            return render(req,"signin.html")
     
     else:
         return render(req,"signup.html")
@@ -88,3 +115,10 @@ def DTldemo(req):
     student = {1:{'name':'pooja','issuedbook':'python'},2:{'name':'Raj','issuedbook':'Java'}}
     context = {'name':name , 'DateTime' : datetime.now(),'hour':datetime.now().hour,'password':password,'author':author , 'student': student }
     return render(req,'DTldemo.html',context)
+
+def dashborad(req):
+    return render(req,"dashborad.html")
+
+def userlogout(req):
+    logout(req)
+    return redirect('/')
